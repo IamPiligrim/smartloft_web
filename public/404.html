@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Smart Lofts Moscow</title>
+    <script>
+      // GitHub Pages has no server-side rewrites, so a direct link or a
+      // refresh on a route like /booking hits this 404 page instead of
+      // index.html. This re-encodes the path into a query string and
+      // redirects to the site root, where the inline script in index.html
+      // decodes it and hands the real path back to react-router.
+      // __SEGMENTS__ is replaced by the deploy workflow with the number of
+      // path segments the GitHub Pages project sub-path takes up (0 for a
+      // <user>.github.io root page, 1 for a normal project page).
+      var segmentsToKeep = __SEGMENTS__
+      var l = window.location
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + segmentsToKeep).join('/') +
+          '/?/' +
+          l.pathname
+            .slice(1)
+            .split('/')
+            .slice(segmentsToKeep)
+            .join('/')
+            .replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,81 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; a newer push cancels an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # Project pages are served from https://<user>.github.io/<repo>/, so
+      # Vite's base and react-router's basename both need "/<repo>/". A repo
+      # literally named <user>.github.io is a root user/org page and is
+      # served from "/" instead.
+      - name: Compute GitHub Pages base path
+        id: base
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "path=/" >> "$GITHUB_OUTPUT"
+            echo "segments=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=/$REPO_NAME/" >> "$GITHUB_OUTPUT"
+            echo "segments=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        env:
+          VITE_BASE_PATH: ${{ steps.base.outputs.path }}
+        run: npm run build
+
+      # public/404.html is copied verbatim into dist/ by Vite; fill in the
+      # base-path depth so its client-side redirect (see index.html for the
+      # matching decode step) lands back on the right route.
+      - name: Configure the SPA 404 redirect
+        run: sed -i "s/__SEGMENTS__/${{ steps.base.outputs.segments }}/" dist/404.html
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
