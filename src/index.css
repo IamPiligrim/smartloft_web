@@ -1,111 +1,110 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* -- palette: warm plaster + petrol teal + brass, drawn from the apartments themselves -- */
+  --paper: #ede7dc;
+  --paper-raised: #f7f3ea;
+  --ink: #221d17;
+  --ink-soft: #5c5346;
+  --ink-faint: #8a7f70;
+  --teal: #1f4a47;
+  --teal-solid: #1f4a47;
+  --teal-strong: #143733;
+  --on-teal: #f7f3ea;
+  --teal-tint: #dee7e2;
+  --brass: #a3803f;
+  --heart: #b3413c;
+  --line: #d9cfbd;
+  --line-strong: #c3b69d;
+  --card: #f7f3ea;
+  --focus-ring: #1f4a47;
+  --shadow: 0 24px 48px -28px rgba(34, 29, 23, 0.35);
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --serif: 'Fraunces', 'Iowan Old Style', 'Georgia', serif;
+  --sans: 'Manrope', system-ui, 'Segoe UI', sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 17px/1.6 var(--sans);
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--ink);
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --paper: #17140f;
+    --paper-raised: #1e1a13;
+    --ink: #f1ebde;
+    --ink-soft: #bcb09b;
+    --ink-faint: #86795f;
+    --teal: #8fd0c5;
+    --teal-solid: #5fa89d;
+    --teal-strong: #7cc0b4;
+    --on-teal: #0f2422;
+    --teal-tint: rgba(143, 208, 197, 0.12);
+    --brass: #cfa965;
+    --heart: #c96a63;
+    --line: #35301f;
+    --line-strong: #453f28;
+    --card: #1e1a13;
+    --focus-ring: #7fc3b8;
+    --shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.6);
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
 }
 
 body {
   margin: 0;
+  background: var(--paper);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
+h1, h2, h3 {
+  font-family: var(--serif);
+  color: var(--ink);
+  margin: 0;
   font-weight: 500;
-  color: var(--text-h);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+a {
+  color: inherit;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--teal);
+  color: var(--paper-raised);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

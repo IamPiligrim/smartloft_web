@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /CLAUDE.md
+
+# Reference material pulled from the live site (design reference only, not shipped assets)
+/design-reference
