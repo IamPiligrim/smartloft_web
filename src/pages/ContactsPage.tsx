@@ -4,8 +4,60 @@ import skylinePhoto from '../assets/photos/loft-skyline.webp'
 import diningPhoto from '../assets/photos/loft-dining.webp'
 import breakfastPhoto from '../assets/photos/loft-breakfast.webp'
 import loungePhoto from '../assets/photos/loft-lounge.webp'
+import airbnbAward from '../assets/awards/airbnb-superhost.webp'
+import yandexAward from '../assets/awards/yandex-maps.webp'
+import gisAward from '../assets/awards/prize-2gis.webp'
+import hotels101Award from '../assets/awards/101hotels.webp'
+import oneTwoTripAward from '../assets/awards/onetwotrip.webp'
+import sutochnoAward from '../assets/awards/sutochno.webp'
+import guestsChoiceAward from '../assets/awards/guests-choice.webp'
 import { CONTACT_METHODS, EMAIL, LOCATIONS, PHONE_TEL, PHONE_DISPLAY, PHONE_WA, TELEGRAM_URL, osmEmbedSrc } from '../siteData'
 import './ContactsPage.css'
+
+const AWARDS = [
+  {
+    name: 'Airbnb',
+    alt: 'Airbnb Superhost',
+    image: airbnbAward,
+    href: 'https://www.airbnb.ru/p/smartlofts',
+  },
+  {
+    name: 'Яндекс Карты',
+    alt: 'Яндекс Карты: «Хорошее место», выбор пользователей 2023',
+    image: yandexAward,
+    href: 'https://yandex.ru/maps/org/smart_lofts_moscow/200860700140/',
+  },
+  {
+    name: '2ГИС',
+    alt: 'Премия 2ГИС: «Вы — лучшие из лучших»',
+    image: gisAward,
+    href: 'https://2gis.ru/moscow/branches/70000001061903508',
+  },
+  {
+    name: '101Hotels.com',
+    alt: '101Hotels.com',
+    image: hotels101Award,
+    href: 'https://101hotels.com/main/cities/moskva/otel_smart_lofts_moscow.html',
+  },
+  {
+    name: 'OneTwoTrip',
+    alt: 'OneTwoTrip: выбор клиентов на основе отзывов',
+    image: oneTwoTripAward,
+    href: 'https://www.onetwotrip.com/ru/hotels/',
+  },
+  {
+    name: 'Суточно.ру',
+    alt: 'Суточно.ру: рейтинг 9,9, выбор гостей',
+    image: sutochnoAward,
+    href: 'https://sutochno.ru/front/searchapp/detail/1358617',
+  },
+  {
+    name: 'Ostrovok',
+    alt: "Guests' Choice: Smart Lofts Moscow",
+    image: guestsChoiceAward,
+    href: 'https://ostrovok.ru/hotel/russia/moscow/mid9932039/smart_lofts_moscow/',
+  },
+]
 
 function ContactsPage() {
   useEffect(() => {
@@ -95,6 +147,28 @@ function ContactsPage() {
             <img className="hero__photo hero__photo--b" src={diningPhoto} alt="" width="1152" height="768" />
             <img className="hero__photo hero__photo--c" src={breakfastPhoto} alt="" width="1152" height="768" />
           </div>
+        </div>
+      </section>
+
+      <section className="awards" id="awards" aria-labelledby="awards-heading">
+        <div className="wrap">
+          <div className="section-head">
+            <h2 id="awards-heading">Избраны теми, кому доверяют</h2>
+            <p>
+              Airbnb, Яндекс Карты, 2ГИС и агрегаторы бронирования держат нас в лучших по отзывам гостей. Нажмите на
+              награду, чтобы увидеть оценки на самой площадке.
+            </p>
+          </div>
+
+          <ul className="awards__row" role="list">
+            {AWARDS.map((award) => (
+              <li className="awards__item" key={award.name}>
+                <a href={award.href} target="_blank" rel="noopener noreferrer" aria-label={`${award.name}: ${award.alt}. Открыть в новой вкладке`}>
+                  <img src={award.image} alt={award.alt} loading="lazy" />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
