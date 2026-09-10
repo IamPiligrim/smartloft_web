@@ -1,5 +1,5 @@
 import { NavLink, Outlet, Link } from 'react-router-dom'
-import { EMAIL, PHONE_DISPLAY, PHONE_TEL, TELEGRAM_HANDLE, TELEGRAM_URL } from '../siteData'
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL, TELEGRAM_HANDLE, TELEGRAM_URL, iconHref } from '../siteData'
 import '../styles/shared.css'
 
 function Logo({ className = 'logo' }: { className?: string }) {
@@ -9,7 +9,7 @@ function Logo({ className = 'logo' }: { className?: string }) {
       <span className="logo__word logo__word--accent">
         lofts
         <svg className="logo__heart" role="presentation" aria-hidden="true">
-          <use href="/icons.svg#icon-heart" />
+          <use href={iconHref('icon-heart')} />
         </svg>
       </span>
       <span className="logo__word">moscow</span>
@@ -43,7 +43,7 @@ function Layout() {
 
           <a className="button button--ghost site-header__cta" href={`tel:${PHONE_TEL}`} aria-label={`Позвонить: ${PHONE_DISPLAY}`}>
             <svg className="icon" role="presentation" aria-hidden="true">
-              <use href="/icons.svg#icon-phone" />
+              <use href={iconHref('icon-phone')} />
             </svg>
             <span className="site-header__cta-label">{PHONE_DISPLAY}</span>
           </a>

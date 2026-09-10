@@ -1,3 +1,9 @@
+// The icon sprite lives in public/, so its URL must honor Vite's base path
+// (e.g. "/<repo>/" on GitHub Pages project sites) instead of a hardcoded "/".
+export function iconHref(id: string) {
+  return `${import.meta.env.BASE_URL}icons.svg#${id}`
+}
+
 export const PHONE_DISPLAY = '+7 977 799-20-43'
 export const PHONE_TEL = '+79777992043'
 export const PHONE_WA = '79777992043'

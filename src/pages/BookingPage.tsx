@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState, type FormEvent, type SyntheticEvent } from 'react'
 import loungePhoto from '../assets/photos/loft-lounge.webp'
-import { EMAIL, LOCATIONS, PHONE_DISPLAY, PHONE_TEL, PHONE_WA } from '../siteData'
+import { EMAIL, LOCATIONS, PHONE_DISPLAY, PHONE_TEL, PHONE_WA, iconHref } from '../siteData'
 import './BookingPage.css'
 
 const APARTMENT_TYPES = ['Студия', '1-комнатные апартаменты', '2-комнатные апартаменты', '3-комнатные апартаменты', '4-комнатные апартаменты']
@@ -147,7 +147,7 @@ function BookingPage() {
             </p>
             <a className="button button--primary" href="#booking-form">
               <svg className="icon" role="presentation" aria-hidden="true">
-                <use href="/icons.svg#icon-calendar" />
+                <use href={iconHref('icon-calendar')} />
               </svg>
               Перейти к форме
             </a>
@@ -168,7 +168,7 @@ function BookingPage() {
               <li className="row-list__row" key={tier.nights}>
                 <span className="row-list__icon">
                   <svg className="icon" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-percent" />
+                    <use href={iconHref('icon-percent')} />
                   </svg>
                 </span>
                 <span className="row-list__text">
@@ -197,25 +197,25 @@ function BookingPage() {
             <div className="info-aside__facts">
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-key" />
+                  <use href={iconHref('icon-key')} />
                 </svg>
                 <span>Бесконтактное заселение, доступно 24/7</span>
               </div>
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-card" />
+                  <use href={iconHref('icon-card')} />
                 </svg>
                 <span>Предоплата за 1 сутки подтверждает бронь</span>
               </div>
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-phone" />
+                  <use href={iconHref('icon-phone')} />
                 </svg>
                 <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
               </div>
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-mail" />
+                  <use href={iconHref('icon-mail')} />
                 </svg>
                 <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
               </div>
@@ -272,7 +272,7 @@ function BookingPage() {
                 >
                   <span className="apartment-card__any-icon">
                     <svg className="icon" role="presentation" aria-hidden="true">
-                      <use href="/icons.svg#icon-key" />
+                      <use href={iconHref('icon-key')} />
                     </svg>
                   </span>
                   <span className="apartment-card__body">
@@ -281,7 +281,7 @@ function BookingPage() {
                   </span>
                   <span className="apartment-card__check" aria-hidden="true">
                     <svg className="icon icon--sm" role="presentation" aria-hidden="true">
-                      <use href="/icons.svg#icon-check" />
+                      <use href={iconHref('icon-check')} />
                     </svg>
                   </span>
                 </button>
@@ -303,7 +303,7 @@ function BookingPage() {
                       </span>
                       <span className="apartment-card__check" aria-hidden="true">
                         <svg className="icon icon--sm" role="presentation" aria-hidden="true">
-                          <use href="/icons.svg#icon-check" />
+                          <use href={iconHref('icon-check')} />
                         </svg>
                       </span>
                     </button>
@@ -396,7 +396,7 @@ function BookingPage() {
 
             <button className="button button--primary form-submit" type="submit">
               <svg className="icon" role="presentation" aria-hidden="true">
-                <use href="/icons.svg#icon-whatsapp" />
+                <use href={iconHref('icon-whatsapp')} />
               </svg>
               Отправить заявку в WhatsApp
             </button>

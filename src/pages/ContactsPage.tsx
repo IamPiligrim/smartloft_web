@@ -11,7 +11,7 @@ import hotels101Award from '../assets/awards/101hotels.webp'
 import oneTwoTripAward from '../assets/awards/onetwotrip.webp'
 import sutochnoAward from '../assets/awards/sutochno.webp'
 import guestsChoiceAward from '../assets/awards/guests-choice.webp'
-import { CONTACT_METHODS, EMAIL, LOCATIONS, PHONE_TEL, PHONE_DISPLAY, PHONE_WA, TELEGRAM_URL, osmEmbedSrc } from '../siteData'
+import { CONTACT_METHODS, EMAIL, LOCATIONS, PHONE_TEL, PHONE_DISPLAY, PHONE_WA, TELEGRAM_URL, iconHref, osmEmbedSrc } from '../siteData'
 import './ContactsPage.css'
 
 const AWARDS = [
@@ -122,19 +122,19 @@ function ContactsPage() {
               <div className="hero__actions">
                 <Link className="button button--primary" to="/booking">
                   <svg className="icon" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-calendar" />
+                    <use href={iconHref('icon-calendar')} />
                   </svg>
                   Забронировать
                 </Link>
                 <a className="button button--outline" href={`https://wa.me/${PHONE_WA}`}>
                   <svg className="icon" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-whatsapp" />
+                    <use href={iconHref('icon-whatsapp')} />
                   </svg>
                   WhatsApp
                 </a>
                 <a className="button button--outline" href={TELEGRAM_URL}>
                   <svg className="icon" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-telegram" />
+                    <use href={iconHref('icon-telegram')} />
                   </svg>
                   Telegram
                 </a>
@@ -184,7 +184,7 @@ function ContactsPage() {
               <li className="row-list__row" key={method.label}>
                 <span className="row-list__icon">
                   <svg className="icon" role="presentation" aria-hidden="true">
-                    <use href={`/icons.svg#${method.icon}`} />
+                    <use href={iconHref(method.icon)} />
                   </svg>
                 </span>
                 <span className="row-list__text">
@@ -194,7 +194,7 @@ function ContactsPage() {
                 <a className="row-list__value" href={method.href}>
                   {method.value}
                   <svg className="icon icon--sm" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-arrow" />
+                    <use href={iconHref('icon-arrow')} />
                   </svg>
                 </a>
               </li>
@@ -223,7 +223,7 @@ function ContactsPage() {
                       aria-pressed={isActive}
                     >
                       <svg className="icon" role="presentation" aria-hidden="true">
-                        <use href="/icons.svg#icon-pin" />
+                        <use href={iconHref('icon-pin')} />
                       </svg>
                       <span className="location-row__text">
                         <span className="location-row__address">{location.address}</span>
@@ -256,7 +256,7 @@ function ContactsPage() {
                 >
                   Открыть в Яндекс Картах
                   <svg className="icon icon--sm" role="presentation" aria-hidden="true">
-                    <use href="/icons.svg#icon-arrow" />
+                    <use href={iconHref('icon-arrow')} />
                   </svg>
                 </a>
               </div>
@@ -278,13 +278,13 @@ function ContactsPage() {
             <div className="info-aside__facts">
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-clock" />
+                  <use href={iconHref('icon-clock')} />
                 </svg>
                 <span>Отвечаем ежедневно, 8:00–22:00</span>
               </div>
               <div className="info-aside__fact">
                 <svg className="icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#icon-mail" />
+                  <use href={iconHref('icon-mail')} />
                 </svg>
                 <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
               </div>
@@ -323,7 +323,7 @@ function ContactsPage() {
 
             <button className="button button--primary form-submit" type="submit">
               <svg className="icon" role="presentation" aria-hidden="true">
-                <use href="/icons.svg#icon-whatsapp" />
+                <use href={iconHref('icon-whatsapp')} />
               </svg>
               Отправить в WhatsApp
             </button>
