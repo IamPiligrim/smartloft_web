@@ -276,7 +276,7 @@ a.row-list__value:hover {
 
 .split-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 56px;
   align-items: start;
 }
@@ -386,7 +386,13 @@ a.row-list__value:hover {
   border: 1px solid var(--line-strong);
   border-radius: 7px;
   padding: 12px 14px;
+  width: 100%;
+}
+.form-field textarea {
   resize: vertical;
+}
+.form-field input[type='date'] {
+  cursor: pointer;
 }
 .form-field input:focus-visible,
 .form-field select:focus-visible,

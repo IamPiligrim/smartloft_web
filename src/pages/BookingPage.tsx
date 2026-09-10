@@ -1,9 +1,12 @@
-import { useEffect, useId, useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useId, useMemo, useState, type FormEvent, type SyntheticEvent } from 'react'
 import loungePhoto from '../assets/photos/loft-lounge.webp'
 import { EMAIL, LOCATIONS, PHONE_DISPLAY, PHONE_TEL, PHONE_WA } from '../siteData'
 import './BookingPage.css'
 
 const APARTMENT_TYPES = ['Студия', '1-комнатные апартаменты', '2-комнатные апартаменты', '3-комнатные апартаменты', '4-комнатные апартаменты']
+
+const MIN_GUESTS = 1
+const MAX_GUESTS = 8
 
 const DISCOUNT_TIERS = [
   { nights: 30, percent: 25 },
@@ -18,6 +21,14 @@ function pluralizeNights(n: number) {
   if (mod10 === 1 && mod100 !== 11) return 'ночь'
   if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) return 'ночи'
   return 'ночей'
+}
+
+function pluralizeGuests(n: number) {
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod10 === 1 && mod100 !== 11) return 'гость'
+  if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) return 'гостя'
+  return 'гостей'
 }
 
 function discountFor(nights: number) {
@@ -50,6 +61,7 @@ function BookingPage() {
   const [checkin, setCheckin] = useState(defaultCheckin)
   const [checkout, setCheckout] = useState(defaultCheckout)
   const [guests, setGuests] = useState(2)
+  const [promoCode, setPromoCode] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [comment, setComment] = useState('')
@@ -57,9 +69,9 @@ function BookingPage() {
 
   const checkinId = useId()
   const checkoutId = useId()
-  const locationSelectId = useId()
   const typeSelectId = useId()
   const guestsId = useId()
+  const promoId = useId()
   const nameId = useId()
   const phoneId = useId()
   const commentId = useId()
@@ -70,6 +82,21 @@ function BookingPage() {
       const next = new Date(`${value}T00:00:00`)
       next.setDate(next.getDate() + 1)
       setCheckout(toISODate(next))
+    }
+  }
+
+  function adjustGuests(delta: number) {
+    setGuests((current) => Math.min(MAX_GUESTS, Math.max(MIN_GUESTS, current + delta)))
+  }
+
+  function openDatePicker(event: SyntheticEvent<HTMLInputElement>) {
+    const input = event.currentTarget
+    if (typeof input.showPicker === 'function') {
+      try {
+        input.showPicker()
+      } catch {
+        // showPicker requires a direct user gesture in some browsers — ignore if it can't open.
+      }
     }
   }
 
@@ -94,12 +121,13 @@ function BookingPage() {
         ? `Даты: ${formatDate(checkin)} — ${formatDate(checkout)} (${nights} ${pluralizeNights(nights)}${discount ? `, скидка ${discount.percent}%` : ''}).`
         : null,
       `Гостей: ${guests}.`,
+      promoCode.trim() ? `Промокод: ${promoCode.trim()}.` : null,
       `Имя: ${name.trim() || '—'}.`,
       phone.trim() ? `Телефон: ${phone.trim()}.` : null,
       comment.trim() || null,
     ].filter(Boolean)
     return `https://wa.me/${PHONE_WA}?text=${encodeURIComponent(lines.join(' '))}`
-  }, [apartmentType, locationLabel, nights, checkin, checkout, discount, guests, name, phone, comment])
+  }, [apartmentType, locationLabel, nights, checkin, checkout, discount, guests, promoCode, name, phone, comment])
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -114,8 +142,8 @@ function BookingPage() {
           <div>
             <h1 className="booking-hero__heading">Заезжайте в любое время — заселение бесконтактное, 24/7</h1>
             <p className="booking-hero__lead">
-              Выберите даты и апартаменты — соберём заявку и откроем WhatsApp с готовым сообщением. Бронь
-              подтверждается предоплатой за первые сутки проживания.
+              Выберите даты, апартаменты и число гостей — соберём заявку и откроем WhatsApp с готовым сообщением.
+              Бронь подтверждается предоплатой за первые сутки проживания.
             </p>
             <a className="button button--primary" href="#booking-form">
               <svg className="icon" role="presentation" aria-hidden="true">
@@ -161,8 +189,9 @@ function BookingPage() {
           <div className="info-aside">
             <h2 id="booking-form-heading">Оставить заявку на бронирование</h2>
             <p>
-              Заполните форму — мы проверим даты, посчитаем скидку и подтвердим бронь. Данные никуда не
-              сохраняются: сообщение уходит напрямую в WhatsApp.
+              Выберите апартаменты по фотографии, укажите даты и промокод, если он у вас есть — мы проверим
+              наличие, посчитаем скидку и подтвердим бронь. Данные никуда не сохраняются: сообщение уходит
+              напрямую в WhatsApp.
             </p>
 
             <div className="info-aside__facts">
@@ -204,6 +233,8 @@ function BookingPage() {
                   min={defaultCheckin}
                   value={checkin}
                   onChange={(event) => handleCheckinChange(event.target.value)}
+                  onClick={openDatePicker}
+                  onFocus={openDatePicker}
                   required
                 />
               </div>
@@ -216,6 +247,8 @@ function BookingPage() {
                   min={checkin || defaultCheckin}
                   value={checkout}
                   onChange={(event) => setCheckout(event.target.value)}
+                  onClick={openDatePicker}
+                  onFocus={openDatePicker}
                   required
                 />
               </div>
@@ -228,18 +261,58 @@ function BookingPage() {
               </p>
             )}
 
-            <div className="form-panel__row">
-              <div className="form-field">
-                <label htmlFor={locationSelectId}>Апартаменты</label>
-                <select id={locationSelectId} name="location" value={locationId} onChange={(event) => setLocationId(event.target.value)}>
-                  <option value="any">Любые свободные</option>
-                  {LOCATIONS.map((location) => (
-                    <option key={location.id} value={location.id}>
-                      {location.address}
-                    </option>
-                  ))}
-                </select>
+            <div className="form-field">
+              <label id={`${checkinId}-apartments-label`}>Апартаменты</label>
+              <div className="apartment-picker" role="group" aria-labelledby={`${checkinId}-apartments-label`}>
+                <button
+                  type="button"
+                  className={`apartment-card apartment-card--any${locationId === 'any' ? ' is-selected' : ''}`}
+                  onClick={() => setLocationId('any')}
+                  aria-pressed={locationId === 'any'}
+                >
+                  <span className="apartment-card__any-icon">
+                    <svg className="icon" role="presentation" aria-hidden="true">
+                      <use href="/icons.svg#icon-key" />
+                    </svg>
+                  </span>
+                  <span className="apartment-card__body">
+                    <span className="apartment-card__address">Любые свободные</span>
+                    <span className="apartment-card__metro">Подберём вариант под даты</span>
+                  </span>
+                  <span className="apartment-card__check" aria-hidden="true">
+                    <svg className="icon icon--sm" role="presentation" aria-hidden="true">
+                      <use href="/icons.svg#icon-check" />
+                    </svg>
+                  </span>
+                </button>
+
+                {LOCATIONS.map((location) => {
+                  const isActive = location.id === locationId
+                  return (
+                    <button
+                      type="button"
+                      key={location.id}
+                      className={`apartment-card${isActive ? ' is-selected' : ''}`}
+                      onClick={() => setLocationId(location.id)}
+                      aria-pressed={isActive}
+                    >
+                      <img className="apartment-card__photo" src={location.photo} alt="" />
+                      <span className="apartment-card__body">
+                        <span className="apartment-card__address">{location.address}</span>
+                        <span className="apartment-card__metro">{location.metro}</span>
+                      </span>
+                      <span className="apartment-card__check" aria-hidden="true">
+                        <svg className="icon icon--sm" role="presentation" aria-hidden="true">
+                          <use href="/icons.svg#icon-check" />
+                        </svg>
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
+            </div>
+
+            <div className="form-panel__row">
               <div className="form-field">
                 <label htmlFor={typeSelectId}>Тип апартаментов</label>
                 <select id={typeSelectId} name="apartmentType" value={apartmentType} onChange={(event) => setApartmentType(event.target.value)}>
@@ -250,20 +323,59 @@ function BookingPage() {
                   ))}
                 </select>
               </div>
+              <div className="form-field">
+                <label htmlFor={guestsId}>Гостей</label>
+                <div className="stepper">
+                  <button
+                    type="button"
+                    className="stepper__button"
+                    onClick={() => adjustGuests(-1)}
+                    disabled={guests <= MIN_GUESTS}
+                    aria-label="Уменьшить количество гостей"
+                  >
+                    −
+                  </button>
+                  <input
+                    id={guestsId}
+                    className="stepper__input"
+                    name="guests"
+                    type="number"
+                    inputMode="numeric"
+                    min={MIN_GUESTS}
+                    max={MAX_GUESTS}
+                    value={guests}
+                    onChange={(event) => {
+                      const parsed = Number(event.target.value)
+                      if (!Number.isNaN(parsed)) setGuests(Math.min(MAX_GUESTS, Math.max(MIN_GUESTS, parsed)))
+                    }}
+                    aria-label={`${guests} ${pluralizeGuests(guests)}`}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="stepper__button"
+                    onClick={() => adjustGuests(1)}
+                    disabled={guests >= MAX_GUESTS}
+                    aria-label="Увеличить количество гостей"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="form-field">
-              <label htmlFor={guestsId}>Гостей</label>
+              <label htmlFor={promoId}>Промокод</label>
               <input
-                id={guestsId}
-                name="guests"
-                type="number"
-                min={1}
-                max={8}
-                value={guests}
-                onChange={(event) => setGuests(Number(event.target.value))}
-                required
+                id={promoId}
+                name="promo"
+                type="text"
+                autoComplete="off"
+                value={promoCode}
+                onChange={(event) => setPromoCode(event.target.value)}
+                placeholder="Если есть — впишите"
               />
+              <span className="form-field__note">Необязательно. Администратор проверит и применит скидку при подтверждении.</span>
             </div>
 
             <div className="form-panel__row">

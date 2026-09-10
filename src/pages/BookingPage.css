@@ -67,3 +67,137 @@
   border-radius: var(--radius-pill);
   margin-top: -4px;
 }
+
+/* ---------- apartment picker (photo cards) ---------- */
+
+.apartment-picker {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  margin-inline: -4px;
+  padding: 4px;
+}
+.apartment-card {
+  position: relative;
+  flex: 0 0 156px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 150ms ease;
+}
+.apartment-card:hover {
+  border-color: var(--line-strong);
+}
+.apartment-card.is-selected {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 1px var(--teal);
+}
+.apartment-card__photo {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}
+.apartment-card__any-icon {
+  height: 100px;
+  display: grid;
+  place-items: center;
+  background: var(--teal-tint);
+  color: var(--teal);
+}
+.apartment-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 11px 11px;
+}
+.apartment-card__address {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.apartment-card__metro {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+.apartment-card.is-selected .apartment-card__address {
+  color: var(--teal);
+}
+.apartment-card__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--teal-solid);
+  color: var(--on-teal);
+}
+.apartment-card__check .icon--sm {
+  width: 12px;
+  height: 12px;
+}
+.apartment-card.is-selected .apartment-card__check {
+  display: flex;
+}
+
+/* ---------- guest stepper ---------- */
+
+.stepper {
+  display: flex;
+  align-items: stretch;
+  width: fit-content;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  background: var(--paper-raised);
+  overflow: hidden;
+}
+.form-field .stepper__input {
+  width: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.form-field .stepper__input::-webkit-inner-spin-button,
+.form-field .stepper__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-field .stepper__input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+  border: none;
+}
+.stepper__button {
+  width: 42px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.stepper__button:hover:not(:disabled) {
+  background: var(--teal-tint);
+  color: var(--teal);
+}
+.stepper__button:disabled {
+  color: var(--ink-faint);
+  cursor: not-allowed;
+}
